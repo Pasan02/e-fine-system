@@ -1,0 +1,29 @@
+Introduction to Software Architecture:
+The Role of the Architect (Code vs. Strategy), Non-Functional Requirements
+(NFRs), Trade-off Analysis (Cost vs. Performance), Architecture Decision
+Records (ADRs), Using Generative AI for architectural brainstorming and
+critique
+
+Design Concepts:
+Coupling vs. Cohesion, Clean Architecture (Ports & Adapters), Dependency
+Injection, Technical Debt management, Architectural Smells (Cyclic
+dependencies), The Strangler Fig Pattern, Modern Refactoring strategies
+
+Design Model:
+The C4 Model (Context, Containers, Components, Code), Docs-as-Code
+(Mermaid.js / PlantUML), Viewpoints & Perspectives (Security,
+Deployment, Data), AI-assisted modelling and verification, Reverseengineering diagrams from code
+
+Architectural Styles:
+Modular Monoliths, Microservices (Distributed Systems), Event-Driven
+Architecture (EDA), Serverless (Function-as-a-Service), Cloud-Native
+patterns, Comparison of SQL vs. NoSQL in architectural design
+
+Component-Level Design:
+Refactoring legacy components, Designing distinct boundaries, Interfacebased design, Testing architectural constraints, Migrating logic from
+Monoliths to Services
+
+Design Patterns:
+System-level patterns (Circuit Breaker, Retry, Bulkhead), Scalability
+patterns (CQRS, Sharding), Integration patterns (API Gateway, BFF),
+Caching strateg

@@ -1,0 +1,34 @@
+User Requirement: 
+Aligning with the Sri Lankan government’s national policy of strengthening public services 
+through digitalization, the Sri Lanka Police Department has identified the need to modernize 
+traffic fine payments across the country. This initiative aims to eliminate inefficiencies in the 
+traditional traffic fine settlement process and reduce the inconvenience faced by motorists. To 
+achieve this, the department plans to introduce both a mobile application and a web portal for 
+traffic fine collection. 
+When a driver is stopped for a violation, a traffic police officer issues a traffic fine sheet 
+containing a unique fine reference number and a traffic fine category identifier. Drivers can then 
+use the official mobile application to make an on-the-spot payment by entering these details. 
+If the fine is not paid immediately, drivers can later complete the payment using the same 
+reference number and category identifier via the dedicated web portal by providing the required 
+payment information. Once the payment is successfully processed, an SMS notification is sent 
+to the traffic police officer, enabling the driver to retrieve their license. 
+Additionally, an administrative web portal should be implemented to allow senior officials to 
+monitor traffic fine collections nationwide. This portal will provide insights such as district-wise 
+total collections and breakdowns by fine categories, supporting better oversight and 
+decision-making. 
+Assume that your team is assigned to build this system. You are required to build a separate 
+backend Rest API application and separate front-end applications for each portal and an 
+Android mobile application. 
+Minimum requirements: 
+● Android App to pay the traffic fines on-the-spot. 
+● Single page web application to pay the traffic fine online 
+● Admin web portal to monitor the traffic fine collection. 
+● Send an SMS to traffic police officers upon payment confirmation 
+Technologies to use: 
+● Use any language or framework to develop the backend REST API. (Java/Springboot 
+preferred) 
+● Use any database technology as you wish. (Try to use JPA to access database) 
+● Use any framework to develop the web applications and mobile app as you wish. Ex: 
+React, Vue, Angular, Flutter 
+● The authentication should be handled by using JWT tokens. You can use the Spring 
+Security library for this.
