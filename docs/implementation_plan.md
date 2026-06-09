@@ -420,18 +420,17 @@ Each ADR follows this template:
 
 ---
 
-### Member 2 — Backend: Auth, SMS & Admin Module
+### Member 2 — Backend: SMS & Admin Reporting Module
 **Responsibilities:**
-- [ ] Implement JWT authentication (Spring Security + JWT)
-- [ ] User entity, roles (ADMIN, OFFICER, DRIVER)
-- [ ] Login/register/refresh endpoints
-- [ ] Role-based access control (method-level security)
 - [ ] SMS service integration (Twilio/Dialog API)
 - [ ] Circuit Breaker for SMS (Resilience4j)
 - [ ] Admin reporting endpoints (`/api/admin/*`)
 - [ ] Aggregation queries for district-wise and category-wise reports
+- [ ] Export data generation logic (CSV/PDF)
+- [ ] Audit logging for administrative actions
+- [ ] Unit tests for SMS and Admin services
 
-**Deliverables:** Auth module, SMS module, Admin module, security config
+**Deliverables:** SMS module, Admin module, integration tests
 
 ---
 
@@ -481,19 +480,19 @@ Each ADR follows this template:
 
 ---
 
-### Member 6 — Architecture Lead, Documentation & DevOps
+### Member 6 — Backend Auth, Architecture & DevOps
 **Responsibilities:**
+- [ ] Implement JWT authentication (Spring Security + JWT)
+- [ ] User entity, roles (ADMIN, OFFICER, DRIVER)
+- [ ] Login/register/refresh endpoints
+- [ ] Role-based access control (method-level security)
 - [ ] C4 diagrams (Context, Container, Component) in Mermaid.js
 - [ ] Write all 5 ADRs
-- [ ] Document NFRs with trade-off analysis
-- [ ] API documentation (Swagger/OpenAPI via SpringDoc)
-- [ ] README and project setup guide
 - [ ] CI/CD pipeline setup (GitHub Actions — build + test)
 - [ ] Docker Compose for local development (API + PostgreSQL)
-- [ ] Integration testing across all components
 - [ ] Final system demo preparation
 
-**Deliverables:** All architecture docs, C4 diagrams, ADRs, Docker setup, CI/CD
+**Deliverables:** Auth module, Security config, Architecture docs, CI/CD, Docker setup
 
 ---
 
