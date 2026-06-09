@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
         String jwt = tokenProvider.generateToken(authentication);
 
         User user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new com.slpolice.trafficfines.shared.exception.ResourceNotFoundException("User not found"));
 
         return LoginResponse.builder()
                 .accessToken(jwt)
@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User register(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new RuntimeException("Username is already taken");
+            throw new com.slpolice.trafficfines.shared.exception.BadRequestException("Username is already taken");
         }
 
         User user = User.builder()
