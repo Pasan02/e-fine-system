@@ -18,8 +18,7 @@ import {
   AlertTriangle, 
   Hourglass, 
   Calendar, 
-  Activity, 
-  ArrowUpRight 
+  Activity
 } from 'lucide-react';
 
 ChartJS.register(

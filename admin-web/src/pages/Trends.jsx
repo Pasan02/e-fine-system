@@ -17,8 +17,7 @@ import {
   TrendingUp, 
   TrendingDown, 
   Activity, 
-  Calendar, 
-  ArrowUpRight 
+  Calendar
 } from 'lucide-react';
 
 ChartJS.register(

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { mockAdminService } from '../services/mockApiService';
 import { Doughnut } from 'react-chartjs-2';
-import { FileSpreadsheet, Info, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { FileSpreadsheet, Info, ShieldCheck } from 'lucide-react';
 
 export default function FineCategories() {
   const [categories, setCategories] = useState([]);

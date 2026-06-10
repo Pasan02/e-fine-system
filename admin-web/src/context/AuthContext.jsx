@@ -1,35 +1,25 @@
+/* eslint-disable react-refresh/only-export-components */
 // src/context/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { mockAuthService } from '../services/mockApiService';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if user is logged in from localStorage
+  const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('efine_admin_user');
     const token = localStorage.getItem('efine_admin_token');
-    
-    if (savedUser && token) {
-      setUser(JSON.parse(savedUser));
-    }
-    setLoading(false);
-  }, []);
+    return savedUser && token ? JSON.parse(savedUser) : null;
+  });
+  const [loading] = useState(false);
 
   const login = async (username, password) => {
-    try {
-      const response = await mockAuthService.login(username, password);
-      setUser(response);
-      localStorage.setItem('efine_admin_user', JSON.stringify(response));
-      localStorage.setItem('efine_admin_token', response.accessToken);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await mockAuthService.login(username, password);
+    setUser(response);
+    localStorage.setItem('efine_admin_user', JSON.stringify(response));
+    localStorage.setItem('efine_admin_token', response.accessToken);
+    return response;
   };
 
   const logout = () => {
