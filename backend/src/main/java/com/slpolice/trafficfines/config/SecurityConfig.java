@@ -42,7 +42,11 @@ public class SecurityConfig {
             .cors(cors -> cors.configure(http))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login", "/api/fines/verify", "/api/fines/{referenceNumber}").permitAll()
+                // Public endpoints — no JWT required
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/fines/verify").permitAll()
+                .requestMatchers("/api/fines/{referenceNumber}").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/payments").permitAll()
                 .anyRequest().authenticated()
             );
 
