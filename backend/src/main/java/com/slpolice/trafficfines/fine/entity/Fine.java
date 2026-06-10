@@ -14,6 +14,7 @@ import lombok.*;
  * printed on the physical fine sheet (e.g., TF-2026-WP-00001).
  */
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "fines", indexes = {
         // Index on reference_number for fast lookup (NFR: API response < 500ms)
         @Index(name = "idx_fines_reference_number", columnList = "reference_number"),

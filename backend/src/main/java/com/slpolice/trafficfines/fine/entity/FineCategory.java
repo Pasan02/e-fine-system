@@ -15,6 +15,7 @@ import java.util.List;
  * Fine amounts are fixed per category (as per the implementation plan).
  */
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "fine_categories")
 @Data
 @NoArgsConstructor

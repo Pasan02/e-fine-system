@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
  * A Fine can have at most one Payment (one-to-one relationship).
  */
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "payments")
 @Data
 @NoArgsConstructor
