@@ -15,11 +15,35 @@ export const AuthProvider = ({ children }) => {
   const [loading] = useState(false);
 
   const login = async (username, password) => {
-    const response = await mockAuthService.login(username, password);
-    setUser(response);
-    localStorage.setItem('efine_admin_user', JSON.stringify(response));
-    localStorage.setItem('efine_admin_token', response.accessToken);
-    return response;
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      
+      if (!res.ok) {
+        throw new Error('Invalid username or password');
+      }
+      
+      const response = await res.json();
+      
+      // Map response to expected format adding mock fullName for UI
+      const userState = {
+        accessToken: response.accessToken,
+        role: response.role,
+        fullName: 'Admin User',
+        username: username
+      };
+
+      setUser(userState);
+      localStorage.setItem('efine_admin_user', JSON.stringify(userState));
+      localStorage.setItem('efine_admin_token', response.accessToken);
+      return userState;
+    } catch (err) {
+      console.error('Login error:', err);
+      throw err;
+    }
   };
 
   const logout = () => {
