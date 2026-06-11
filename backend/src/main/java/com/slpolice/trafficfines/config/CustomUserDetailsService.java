@@ -17,6 +17,7 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
+    @org.springframework.context.annotation.Lazy
     private UserRepository userRepository;
 
     @Override

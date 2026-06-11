@@ -1,0 +1,114 @@
+/* eslint-disable react-refresh/only-export-components */
+// src/context/AuthContext.jsx
+import { createContext, useContext, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { mockAuthService } from '../services/mockApiService';
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('efine_admin_user');
+    const token = localStorage.getItem('efine_admin_token');
+    return savedUser && token ? JSON.parse(savedUser) : null;
+  });
+  const [loading] = useState(false);
+
+  const login = async (username, password) => {
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      
+      if (!res.ok) {
+        throw new Error('Invalid username or password');
+      }
+      
+      const response = await res.json();
+      
+      // Map response to expected format adding mock fullName for UI
+      const userState = {
+        accessToken: response.accessToken,
+        role: response.role,
+        fullName: 'Admin User',
+        username: username
+      };
+
+      setUser(userState);
+      localStorage.setItem('efine_admin_user', JSON.stringify(userState));
+      localStorage.setItem('efine_admin_token', response.accessToken);
+      return userState;
+    } catch (err) {
+      console.error('Login error:', err);
+      throw err;
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('efine_admin_user');
+    localStorage.removeItem('efine_admin_token');
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+// ProtectedRoute component
+export const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#0a0b10',
+        color: '#f3f4f6',
+        fontFamily: 'Outfit, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '3px solid rgba(139, 92, 246, 0.2)',
+            borderTop: '3px solid #8b5cf6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 16px'
+          }} />
+          <p>Verifying Credentials...</p>
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}} />
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || user.role !== 'ADMIN') {
+    // Redirect to login but save the current location to redirect back
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
