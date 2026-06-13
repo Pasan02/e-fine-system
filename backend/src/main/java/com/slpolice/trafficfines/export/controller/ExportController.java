@@ -1,5 +1,6 @@
 package com.slpolice.trafficfines.export.controller;
 
+import com.slpolice.trafficfines.admin.audit.Auditable;
 import com.slpolice.trafficfines.admin.service.AdminService;
 import com.slpolice.trafficfines.export.service.ExportService;
 import com.slpolice.trafficfines.fine.entity.FineStatus;
@@ -29,6 +30,7 @@ public class ExportController {
     private final List<ExportService> exportServices;
 
     @GetMapping("/{type}/{format}")
+    @Auditable(action = "EXPORT")
     public ResponseEntity<byte[]> export(
             @PathVariable String type,
             @PathVariable String format,
