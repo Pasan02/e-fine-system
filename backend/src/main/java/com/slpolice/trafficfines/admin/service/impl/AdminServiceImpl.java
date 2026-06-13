@@ -1,6 +1,8 @@
 package com.slpolice.trafficfines.admin.service.impl;
 
+import com.slpolice.trafficfines.admin.dto.CategoryReport;
 import com.slpolice.trafficfines.admin.dto.DashboardSummary;
+import com.slpolice.trafficfines.admin.dto.DistrictReport;
 import com.slpolice.trafficfines.admin.dto.FineReport;
 import com.slpolice.trafficfines.admin.dto.OfficerReport;
 import com.slpolice.trafficfines.admin.dto.PaymentReport;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,10 +127,75 @@ public class AdminServiceImpl implements AdminService {
         ).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<DistrictReport> getDistrictReports() {
+        Map<String, Long> totalFines = toMap(fineRepository.countByDistrictGrouped());
+        Map<String, Long> totalPaid = toMap(fineRepository.countPaidByDistrictGrouped());
+        Map<String, Long> totalPending = toMap(fineRepository.countPendingByDistrictGrouped());
+        Map<String, Long> totalExpired = toMap(fineRepository.countExpiredByDistrictGrouped());
+        Map<String, BigDecimal> revenue = toBigDecimalMap(paymentRepository.sumAmountPaidByDistrictGrouped());
+
+        return totalFines.keySet().stream().map(district -> DistrictReport.builder()
+                .district(district)
+                .totalFines(totalFines.getOrDefault(district, 0L))
+                .totalPaid(totalPaid.getOrDefault(district, 0L))
+                .totalPending(totalPending.getOrDefault(district, 0L))
+                .totalExpired(totalExpired.getOrDefault(district, 0L))
+                .totalRevenue(revenue.getOrDefault(district, BigDecimal.ZERO))
+                .build()
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoryReport> getCategoryReports() {
+        Map<String, Long> totalFines = new HashMap<>();
+        Map<String, Long> totalPaid = new HashMap<>();
+        Map<String, BigDecimal> revenue = new HashMap<>();
+        Map<String, String> descriptions = new HashMap<>();
+        Map<String, BigDecimal> amounts = new HashMap<>();
+
+        for (Object[] row : fineRepository.countByCategoryGrouped()) {
+            String code = (String) row[0];
+            descriptions.put(code, (String) row[1]);
+            totalFines.put(code, (Long) row[2]);
+        }
+        for (Object[] row : fineRepository.countPaidByCategoryGrouped()) {
+            String code = (String) row[0];
+            totalPaid.put(code, (Long) row[2]);
+        }
+        for (Object[] row : paymentRepository.sumAmountPaidByCategoryGrouped()) {
+            String code = (String) row[0];
+            revenue.put(code, (BigDecimal) row[2]);
+        }
+
+        return fineRepository.findAll().stream()
+                .map(f -> f.getCategory())
+                .distinct()
+                .map(cat -> CategoryReport.builder()
+                        .categoryCode(cat.getCategoryCode())
+                        .description(cat.getDescription())
+                        .amount(cat.getAmount())
+                        .totalFinesIssued(totalFines.getOrDefault(cat.getCategoryCode(), 0L))
+                        .totalFinesPaid(totalPaid.getOrDefault(cat.getCategoryCode(), 0L))
+                        .totalRevenue(revenue.getOrDefault(cat.getCategoryCode(), BigDecimal.ZERO))
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
     private Map<String, Long> toMap(List<Object[]> rows) {
         Map<String, Long> map = new HashMap<>();
         for (Object[] row : rows) {
             map.put((String) row[0], (Long) row[1]);
+        }
+        return map;
+    }
+
+    private Map<String, BigDecimal> toBigDecimalMap(List<Object[]> rows) {
+        Map<String, BigDecimal> map = new HashMap<>();
+        for (Object[] row : rows) {
+            map.put((String) row[0], (BigDecimal) row[1]);
         }
         return map;
     }

@@ -1,6 +1,8 @@
 package com.slpolice.trafficfines.admin.service;
 
+import com.slpolice.trafficfines.admin.dto.CategoryReport;
 import com.slpolice.trafficfines.admin.dto.DashboardSummary;
+import com.slpolice.trafficfines.admin.dto.DistrictReport;
 import com.slpolice.trafficfines.admin.dto.FineReport;
 import com.slpolice.trafficfines.admin.dto.OfficerReport;
 import com.slpolice.trafficfines.admin.dto.PaymentReport;
@@ -19,4 +21,8 @@ public interface AdminService {
     List<PaymentReport> getAllPayments(PaymentMethod method, PaymentChannel channel);
 
     List<OfficerReport> getOfficerReports();
+
+    List<DistrictReport> getDistrictReports();
+
+    List<CategoryReport> getCategoryReports();
 }

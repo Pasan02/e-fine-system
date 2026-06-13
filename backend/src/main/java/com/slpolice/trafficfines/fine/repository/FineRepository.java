@@ -59,4 +59,16 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
 
     @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'PAID' GROUP BY f.district")
     List<Object[]> countPaidByDistrictGrouped();
+
+    @Query("SELECT f.category.categoryCode, f.category.description, COUNT(f) FROM Fine f GROUP BY f.category.categoryCode, f.category.description")
+    List<Object[]> countByCategoryGrouped();
+
+    @Query("SELECT f.category.categoryCode, f.category.description, COUNT(f) FROM Fine f WHERE f.status = 'PAID' GROUP BY f.category.categoryCode, f.category.description")
+    List<Object[]> countPaidByCategoryGrouped();
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'PENDING' GROUP BY f.district")
+    List<Object[]> countPendingByDistrictGrouped();
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'EXPIRED' GROUP BY f.district")
+    List<Object[]> countExpiredByDistrictGrouped();
 }

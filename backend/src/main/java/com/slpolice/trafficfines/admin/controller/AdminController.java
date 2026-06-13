@@ -1,6 +1,8 @@
 package com.slpolice.trafficfines.admin.controller;
 
+import com.slpolice.trafficfines.admin.dto.CategoryReport;
 import com.slpolice.trafficfines.admin.dto.DashboardSummary;
+import com.slpolice.trafficfines.admin.dto.DistrictReport;
 import com.slpolice.trafficfines.admin.dto.FineReport;
 import com.slpolice.trafficfines.admin.dto.OfficerReport;
 import com.slpolice.trafficfines.admin.dto.PaymentReport;
@@ -48,5 +50,15 @@ public class AdminController {
     @GetMapping("/officers")
     public ResponseEntity<List<OfficerReport>> getOfficers() {
         return ResponseEntity.ok(adminService.getOfficerReports());
+    }
+
+    @GetMapping("/reports/districts")
+    public ResponseEntity<List<DistrictReport>> getDistrictReports() {
+        return ResponseEntity.ok(adminService.getDistrictReports());
+    }
+
+    @GetMapping("/reports/categories")
+    public ResponseEntity<List<CategoryReport>> getCategoryReports() {
+        return ResponseEntity.ok(adminService.getCategoryReports());
     }
 }

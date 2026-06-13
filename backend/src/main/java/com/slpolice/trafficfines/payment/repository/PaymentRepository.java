@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,4 +40,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     long countByPaymentMethod(PaymentMethod paymentMethod);
 
     long countByPaymentChannel(PaymentChannel paymentChannel);
+
+    @Query("SELECT p.fine.district, COALESCE(SUM(p.amountPaid), 0) FROM Payment p GROUP BY p.fine.district")
+    List<Object[]> sumAmountPaidByDistrictGrouped();
+
+    @Query("SELECT p.fine.category.categoryCode, p.fine.category.description, COALESCE(SUM(p.amountPaid), 0) FROM Payment p GROUP BY p.fine.category.categoryCode, p.fine.category.description")
+    List<Object[]> sumAmountPaidByCategoryGrouped();
 }
