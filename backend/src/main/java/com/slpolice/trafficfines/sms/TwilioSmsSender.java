@@ -3,6 +3,8 @@ package com.slpolice.trafficfines.sms;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class TwilioSmsSender implements SmsSender {
 
     private final SmsProperties smsProperties;
+    private final CircuitBreaker smsCircuitBreaker;
 
     @PostConstruct
     public void init() {
@@ -26,13 +29,17 @@ public class TwilioSmsSender implements SmsSender {
     @Override
     public void send(String toPhoneNumber, String message) {
         try {
-            Message twilioMessage = Message.creator(
-                    new PhoneNumber(toPhoneNumber),
-                    new PhoneNumber(smsProperties.getFromNumber()),
-                    message
-            ).create();
+            smsCircuitBreaker.executeRunnable(() -> {
+                Message twilioMessage = Message.creator(
+                        new PhoneNumber(toPhoneNumber),
+                        new PhoneNumber(smsProperties.getFromNumber()),
+                        message
+                ).create();
 
-            log.info("SMS sent to {}: SID={}", toPhoneNumber, twilioMessage.getSid());
+                log.info("SMS sent to {}: SID={}", toPhoneNumber, twilioMessage.getSid());
+            });
+        } catch (CallNotPermittedException e) {
+            log.warn("SMS circuit breaker open — request for {} dropped: {}", toPhoneNumber, e.getMessage());
         } catch (Exception e) {
             log.error("Failed to send SMS to {}: {}", toPhoneNumber, e.getMessage());
         }
