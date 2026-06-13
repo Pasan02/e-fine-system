@@ -175,6 +175,36 @@ class AdminServiceImplTest {
 
             assertThat(results).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should filter fines by both status and district")
+        void shouldFilterByBothStatusAndDistrict() {
+            when(fineRepository.findAll()).thenReturn(List.of(fine));
+
+            List<FineReport> results = adminService.getAllFines(FineStatus.PAID, "WP");
+
+            assertThat(results).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("Should return empty when both filters exclude all")
+        void shouldReturnEmptyWhenBothFiltersExcludeAll() {
+            when(fineRepository.findAll()).thenReturn(List.of(fine));
+
+            List<FineReport> results = adminService.getAllFines(FineStatus.PENDING, "CP");
+
+            assertThat(results).isEmpty();
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no fines exist")
+        void shouldReturnEmptyWhenNoFines() {
+            when(fineRepository.findAll()).thenReturn(List.of());
+
+            List<FineReport> results = adminService.getAllFines(null, null);
+
+            assertThat(results).isEmpty();
+        }
     }
 
     @Nested
@@ -200,6 +230,46 @@ class AdminServiceImplTest {
             List<PaymentReport> results = adminService.getAllPayments(PaymentMethod.CARD, null);
 
             assertThat(results).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("Should filter payments by channel")
+        void shouldFilterByChannel() {
+            when(paymentRepository.findAll()).thenReturn(List.of(payment));
+
+            List<PaymentReport> results = adminService.getAllPayments(null, PaymentChannel.WEB_PORTAL);
+
+            assertThat(results).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("Should filter payments by both method and channel")
+        void shouldFilterByBothMethodAndChannel() {
+            when(paymentRepository.findAll()).thenReturn(List.of(payment));
+
+            List<PaymentReport> results = adminService.getAllPayments(PaymentMethod.CARD, PaymentChannel.WEB_PORTAL);
+
+            assertThat(results).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("Should return empty when no payments match filters")
+        void shouldReturnEmptyWhenNoMatch() {
+            when(paymentRepository.findAll()).thenReturn(List.of(payment));
+
+            List<PaymentReport> results = adminService.getAllPayments(PaymentMethod.MOBILE_WALLET, null);
+
+            assertThat(results).isEmpty();
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no payments exist")
+        void shouldReturnEmptyWhenNoPayments() {
+            when(paymentRepository.findAll()).thenReturn(List.of());
+
+            List<PaymentReport> results = adminService.getAllPayments(null, null);
+
+            assertThat(results).isEmpty();
         }
     }
 
