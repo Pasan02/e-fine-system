@@ -83,7 +83,6 @@ function App() {
     }).format(new Date(value))
 
   const statusStep = receipt ? 3 : fine ? 2 : 1
-  const isBusy = loadingState !== 'idle'
   const paymentLocked = !fine || loadingState === 'paying'
   const selectedCategory = fineCategories.find(({ code }) => code === categoryCode)
 

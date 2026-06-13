@@ -23,9 +23,9 @@ export async function verifyFine(referenceNumber, categoryCode) {
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message) {
-      throw new Error(error.response.data.message);
+      throw new Error(error.response.data.message, { cause: error });
     }
-    throw new Error('Failed to verify fine. Please check the identifiers or try again later.');
+    throw new Error('Failed to verify fine. Please check the identifiers or try again later.', { cause: error });
   }
 }
 
@@ -51,8 +51,8 @@ export async function processPayment({
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message) {
-      throw new Error(error.response.data.message);
+      throw new Error(error.response.data.message, { cause: error });
     }
-    throw new Error('Failed to process payment. Please try again.');
+    throw new Error('Failed to process payment. Please try again.', { cause: error });
   }
 }

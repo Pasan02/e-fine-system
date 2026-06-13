@@ -28,9 +28,9 @@ export const authService = {
       return response.data;
     } catch (error) {
       if (error.response && error.response.data) {
-        throw new Error(error.response.data.message || "Login failed");
+        throw new Error(error.response.data.message || "Login failed", { cause: error });
       }
-      throw new Error("Invalid username or password");
+      throw new Error("Invalid username or password", { cause: error });
     }
   }
 };
@@ -69,7 +69,7 @@ export const adminService = {
       });
 
       return Object.values(trendsMap).sort((a, b) => new Date(a.date) - new Date(b.date));
-    } catch (error) {
+    } catch {
       return [];
     }
   },
