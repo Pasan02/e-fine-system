@@ -3,6 +3,7 @@ package com.slpolice.trafficfines.fine.repository;
 import com.slpolice.trafficfines.fine.entity.Fine;
 import com.slpolice.trafficfines.fine.entity.FineStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,4 +44,31 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
      * Used in reference number uniqueness validation.
      */
     boolean existsByReferenceNumber(String referenceNumber);
+
+    // ── Admin reporting queries ─────────────────────────────────────────────
+
+    long countByStatus(FineStatus status);
+
+    long countByDistrict(String district);
+
+    @Query("SELECT COUNT(f) FROM Fine f WHERE f.status = 'PENDING' AND f.createdAt >= :since")
+    long countPendingSince(java.time.LocalDateTime since);
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f GROUP BY f.district")
+    List<Object[]> countByDistrictGrouped();
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'PAID' GROUP BY f.district")
+    List<Object[]> countPaidByDistrictGrouped();
+
+    @Query("SELECT f.category.categoryCode, f.category.description, COUNT(f) FROM Fine f GROUP BY f.category.categoryCode, f.category.description")
+    List<Object[]> countByCategoryGrouped();
+
+    @Query("SELECT f.category.categoryCode, f.category.description, COUNT(f) FROM Fine f WHERE f.status = 'PAID' GROUP BY f.category.categoryCode, f.category.description")
+    List<Object[]> countPaidByCategoryGrouped();
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'PENDING' GROUP BY f.district")
+    List<Object[]> countPendingByDistrictGrouped();
+
+    @Query("SELECT f.district, COUNT(f) FROM Fine f WHERE f.status = 'EXPIRED' GROUP BY f.district")
+    List<Object[]> countExpiredByDistrictGrouped();
 }
