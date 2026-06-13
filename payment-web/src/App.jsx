@@ -346,20 +346,6 @@ function App() {
         )}
       </section>
 
-      <section className="footer-strip">
-        <div>
-          <strong>Categories supported</strong>
-          <span>{fineCategories.length} seeded violation types for demo and integration testing.</span>
-        </div>
-        <div>
-          <strong>Security posture</strong>
-          <span>Lookup is public, while payment data mirrors the contract expected by the backend.</span>
-        </div>
-        <div>
-          <strong>Backend Connected</strong>
-          <span>This portal is actively connected to the real Spring Boot API.</span>
-        </div>
-      </section>
     </main>
   )
 }
