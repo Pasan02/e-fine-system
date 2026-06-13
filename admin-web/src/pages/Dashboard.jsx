@@ -1,6 +1,6 @@
 // src/pages/Dashboard.jsx
 import { useState, useEffect } from 'react';
-import { mockAdminService } from '../services/mockApiService';
+import { adminService } from '../services/apiService';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -40,9 +40,9 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const statsData = await mockAdminService.getCollectionsSummary();
-        const districtsData = await mockAdminService.getDistrictCollections();
-        const finesData = await mockAdminService.getRecentFines();
+        const statsData = await adminService.getCollectionsSummary();
+        const districtsData = await adminService.getDistrictCollections();
+        const finesData = await adminService.getRecentFines();
         
         setStats(statsData);
         setDistricts(districtsData);

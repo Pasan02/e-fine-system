@@ -1,6 +1,6 @@
 // src/pages/Trends.jsx
 import { useState, useEffect } from 'react';
-import { mockAdminService } from '../services/mockApiService';
+import { adminService } from '../services/apiService';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -38,7 +38,7 @@ export default function Trends() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const trendsData = await mockAdminService.getCollectionTrends();
+        const trendsData = await adminService.getCollectionTrends();
         setTrends(trendsData);
       } catch (err) {
         console.error('Error fetching trends data:', err);

@@ -18,26 +18,7 @@ class FineService {
       );
       return FineDTO.fromJson(response.data);
     } catch (e) {
-      // Mock fallback if backend is not available
-      debugPrint('Real API failed, falling back to Mock Data for Fine Verification');
-      await Future.delayed(const Duration(seconds: 1));
-      return FineDTO(
-        id: 1,
-        referenceNumber: referenceNumber,
-        officerId: 5,
-        officerName: 'P. K. Silva',
-        officerDistrict: 'WP',
-        categoryCode: categoryCode,
-        categoryDescription: 'Exceeding speed limit in urban area',
-        amount: 1500.00,
-        driverLicenseNo: 'B1234567',
-        driverName: 'A. B. Perera',
-        vehicleNumber: 'CAR-1234',
-        district: 'WP',
-        location: 'Colombo 03, Marine Drive',
-        status: 'PENDING',
-        issuedAt: '2026-06-10T14:22:00',
-      );
+      throw Exception('Failed to verify fine details. Please check connection and try again.');
     }
   }
 }

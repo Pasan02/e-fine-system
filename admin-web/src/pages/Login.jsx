@@ -109,7 +109,7 @@ export default function Login() {
 
         <div style={styles.footer}>
           <p>Restricted access. Authorized senior officials only.</p>
-          <p style={styles.hint}>Mock hint: <code>admin</code> / <code>admin123</code></p>
+          <p style={styles.hint}>Please enter your admin credentials</p>
         </div>
       </div>
     </div>

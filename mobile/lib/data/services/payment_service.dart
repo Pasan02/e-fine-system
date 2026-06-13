@@ -29,22 +29,7 @@ class PaymentService {
       );
       return PaymentDTO.fromJson(response.data);
     } catch (e) {
-      // Mock fallback if backend is not available
-      debugPrint('Real API failed, falling back to Mock Data for Payment Processing');
-      await Future.delayed(const Duration(seconds: 1));
-      return PaymentDTO(
-        id: 10,
-        fineId: 1,
-        referenceNumber: referenceNumber,
-        driverName: 'A. B. Perera',
-        vehicleNumber: 'CAR-1234',
-        categoryDescription: 'Exceeding speed limit in urban area',
-        amountPaid: amount,
-        paymentMethod: paymentMethod,
-        paymentChannel: paymentChannel,
-        transactionRef: transactionRef,
-        paidAt: DateTime.now().toIso8601String(),
-      );
+      throw Exception('Payment processing failed. Please try again.');
     }
   }
 }

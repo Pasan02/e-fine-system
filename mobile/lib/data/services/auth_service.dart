@@ -18,11 +18,6 @@ class AuthService {
       
       return LoginResponse.fromJson(response.data);
     } catch (e) {
-      // Return a mock response for now to allow UI testing if backend is down
-      await Future.delayed(const Duration(seconds: 1));
-      if (username == 'officer1' && password == 'password123') {
-        return LoginResponse(accessToken: 'mock_token_123', role: 'OFFICER');
-      }
       throw Exception(AppConstants.authError);
     }
   }

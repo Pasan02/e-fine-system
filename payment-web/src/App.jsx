@@ -4,7 +4,7 @@ import {
   fineCategories,
   processPayment,
   verifyFine,
-} from './services/mockFineService.js'
+} from './services/fineService.js'
 
 function App() {
   const [referenceNumber, setReferenceNumber] = useState('TF-2026-WP-00001')
@@ -288,7 +288,7 @@ function App() {
             </button>
 
             <p className="fine-print">
-              Payments are mocked in this frontend. The API contract expects the amount to match the category price exactly.
+              Payment is processed securely. Make sure your fine is verified.
             </p>
           </form>
         </div>
@@ -356,8 +356,8 @@ function App() {
           <span>Lookup is public, while payment data mirrors the contract expected by the backend.</span>
         </div>
         <div>
-          <strong>Ready for backend swap</strong>
-          <span>Replace the mock service with real HTTP calls once the Spring Boot API is live.</span>
+          <strong>Backend Connected</strong>
+          <span>This portal is actively connected to the real Spring Boot API.</span>
         </div>
       </section>
     </main>

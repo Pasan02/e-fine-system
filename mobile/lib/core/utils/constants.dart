@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
+
 class AppConstants {
-  // Use 10.0.2.2 for Android emulator to connect to localhost
-  static const String baseUrl = 'http://10.0.2.2:8080/api';
+  // Use 10.0.2.2 for Android emulator, localhost for Web/Chrome
+  static const String baseUrl = kIsWeb ? 'http://localhost:8080/api' : 'http://10.0.2.2:8080/api';
   
   // Auth Endpoints
   static const String loginEndpoint = '/auth/login';

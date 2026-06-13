@@ -2,33 +2,22 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { mockAuthService } from '../services/mockApiService';
+import { authService } from '../services/apiService';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('efine_admin_user');
-    const token = localStorage.getItem('efine_admin_token');
+    const token = localStorage.getItem('adminToken');
     return savedUser && token ? JSON.parse(savedUser) : null;
   });
   const [loading] = useState(false);
 
   const login = async (username, password) => {
     try {
-      const res = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
+      const response = await authService.login(username, password);
       
-      if (!res.ok) {
-        throw new Error('Invalid username or password');
-      }
-      
-      const response = await res.json();
-      
-      // Map response to expected format adding mock fullName for UI
       const userState = {
         accessToken: response.accessToken,
         role: response.role,
@@ -38,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
       setUser(userState);
       localStorage.setItem('efine_admin_user', JSON.stringify(userState));
-      localStorage.setItem('efine_admin_token', response.accessToken);
+      localStorage.setItem('adminToken', response.accessToken);
       return userState;
     } catch (err) {
       console.error('Login error:', err);
@@ -49,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('efine_admin_user');
-    localStorage.removeItem('efine_admin_token');
+    localStorage.removeItem('adminToken');
   };
 
   return (

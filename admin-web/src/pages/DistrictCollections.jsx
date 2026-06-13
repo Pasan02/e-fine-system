@@ -1,6 +1,6 @@
 // src/pages/DistrictCollections.jsx
 import { useState, useEffect } from 'react';
-import { mockAdminService } from '../services/mockApiService';
+import { adminService } from '../services/apiService';
 import { Bar } from 'react-chartjs-2';
 import {
   Search,
@@ -28,8 +28,8 @@ export default function DistrictCollections() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const finesData = await mockAdminService.getRecentFines();
-        const districtsData = await mockAdminService.getDistrictCollections();
+        const finesData = await adminService.getRecentFines();
+        const districtsData = await adminService.getDistrictCollections();
         setFines(finesData);
         setDistricts(districtsData);
       } catch (err) {

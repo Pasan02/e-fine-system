@@ -1,6 +1,6 @@
 // src/pages/FineCategories.jsx
 import { useState, useEffect } from 'react';
-import { mockAdminService } from '../services/mockApiService';
+import { adminService } from '../services/apiService';
 import { Doughnut } from 'react-chartjs-2';
 import { FileSpreadsheet, Info, ShieldCheck } from 'lucide-react';
 
@@ -11,7 +11,7 @@ export default function FineCategories() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const categoriesData = await mockAdminService.getCategoryCollections();
+        const categoriesData = await adminService.getCategoryCollections();
         setCategories(categoriesData);
       } catch (err) {
         console.error('Error fetching categories data:', err);
